@@ -1,28 +1,33 @@
 /*api.js - Gestioneaza validarea intrarilor si cererile catre API-ul de geolocalizare */
 
-/* Curata textul introdus de utilizator */
+/* Curata textul introdus: scoate protocolul, calea si portul (https://github.com/x -> github.com) */
 export function cleanQuery(input) {
-    return input.trim();
+    let q = input.trim().replace(/^[a-z]+:\/\//i, '').split(/[/?#]/)[0];
+    if ((q.match(/:/g) || []).length === 1) q = q.split(':')[0]; // host:port (nu IPv6)
+    return q.replace(/^\[|\]$/g, '');                              // [::1] -> ::1
 }
 
 /* Valideaza daca textul este un IPv4, IPv6 sau un nume de domeniu valid */
 export function classifyQuery(query) {
     const clean = cleanQuery(query);
 
-    // Regex pentru IPv4
-    const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    // Regex simplificat pentru IPv6
-    const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
-    // Regex pentru domenii web (ex: google.com, github.io)
-    const domainRegex = /^([a-zA-Z0-9][-a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+    // Gol sau adresa locala: API-ul detecteaza IP-ul utilizatorului curent
+    // (verificat primul, altfel 127.0.0.1 ar fi tratat ca IPv4 obisnuit)
+    if (clean === '' || clean === 'localhost' || clean === '127.0.0.1') {
+        return { type: 'current', value: '' };
+    }
+
+    // IPv4: fiecare numar trebuie sa fie intre 0 si 255
+    const ipv4Regex = /^(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)$/;
+    // IPv6, inclusiv forma prescurtata (ex: 2001:db8::1)
+    const ipv6Regex = /^(?:[0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
+    // Domenii web (ex: google.com, github.io)
+    const domainRegex = /^(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/;
 
     if (ipv4Regex.test(clean) || ipv6Regex.test(clean)) {
         return { type: 'ip', value: clean };
     } else if (domainRegex.test(clean)) {
         return { type: 'domain', value: clean };
-    } else if (clean === '' || clean === 'localhost' || clean === '127.0.0.1') {
-        // Daca e gol, API-ul detecteaza IP-ul utilizatorului curent
-        return { type: 'current', value: '' };
     }
 
     return null; /*Format invalid*/
