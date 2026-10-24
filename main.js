@@ -1,5 +1,6 @@
-// main.js - Gestionează tema și interacțiunea cu api.js
+// main.js - Gestioneaza tema si interactiunea cu api.js
 import { fetchGeoData } from './api.js';
+import { initTheme } from './theme.js';
 
 const el = {
     form: document.getElementById('search-form'),
@@ -7,11 +8,10 @@ const el = {
     error: document.getElementById('error'),
     themeToggle: document.getElementById('theme-toggle')
 };
-// switch de tema
-el.themeToggle?.addEventListener('click', () => {
-    const isDark = document.documentElement.classList.toggle('dark-theme');
-    localStorage.setItem('geo-theme', isDark ? 'dark' : 'light');
-});
+
+// switch de tema (logica este in theme.js)
+if (el.themeToggle) initTheme(el.themeToggle);
+
 // fctii pentru afisarea erorilor in interfata
 function showError(message) {
     if (!el.error) return;
