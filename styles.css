@@ -151,3 +151,29 @@ dd .muted { font-weight: 500; font-variant-numeric: tabular-nums; }
 .history-item:hover { background: var(--surface-strong); border-color: var(--accent); }
 .history-query { font-weight: 600; overflow-wrap: anywhere; }
 .history-empty { margin: 0; }
+
+/* ecrane mari: continutul nu se mai intinde pe toata latimea */
+.topbar, .error, .grid { max-width: 1440px; margin-inline: auto; }
+
+/* tableta: o singura coloana, detaliile pe doua coloane */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "details" "map" "history";
+    grid-template-rows: auto;
+  }
+  .details dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-wrap { min-height: 360px; }
+}
+
+/* telefon: logo si tema pe primul rand, cautarea pe tot randul al doilea */
+@media (max-width: 640px) {
+  .topbar { gap: .75rem; }
+  .topbar .icon-btn { margin-left: auto; }
+  .search { order: 1; flex-basis: 100%; }
+  .search input { padding-inline: .75rem; text-overflow: ellipsis; }
+  .search button { padding-inline: 1rem; }
+  .details dl { grid-template-columns: minmax(0, 1fr); }
+  .card { padding: 1rem; }
+  .map-wrap { min-height: 300px; }
+}
