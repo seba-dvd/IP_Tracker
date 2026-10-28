@@ -1,0 +1,74 @@
+# Jurnal de cod - M
+
+| | |
+|---|---|
+| GitHub | TudorMituleci |
+| Branch | `M` |
+| Versiuni | v1.0.0, v1.1.0, v1.2.0 |
+| Fisiere | `index.html`, `styles.css`, `theme.js`, `api.js`, `main.js` (prima versiune) |
+
+**Responsabilitati:** partea de inceput a paginii (antetul cu bara de cautare si butonul de tema), stilurile de baza si variabilele de design, validarea textului introdus si functia care aduce datele despre IP-uri si domenii.
+
+**Cum se citeste:** in cod, blocurile scrise de M au comentarii de forma `M v1.2.0: ...`. Versiunea din comentariu este sectiunea din acest jurnal unde blocul este explicat.
+
+---
+
+## v1.0.0 - pagina de inceput, tema light / dark si design de baza
+
+Commit: `044020d`
+
+**Ce s-a facut**
+
+- `index.html`: structura paginii si antetul (`<header class="topbar">`) cu logo-ul, formularul de cautare (`#search-form`, `#search-input`) si butonul de tema (`#theme-toggle`, cu iconitele soare si luna), plus alerta pentru erori (`#error`).
+- In `<head>` se incarca fonturile Google (Bricolage Grotesque pentru titluri, Figtree pentru text) si stilurile Leaflet, folosite mai tarziu de harta.
+- Un script scurt in `<head>` aplica tema salvata (cheia `geo-theme`) inainte sa se afiseze pagina, ca tema intunecata sa nu "clipeasca" alb la incarcare.
+- `styles.css`:
+  - variabilele de design din `:root` (culori, suprafete semitransparente, umbre, raze, fonturi), fiecare cu un comentariu;
+  - `.dark-theme` redefineste aceleasi variabile pentru tema intunecata;
+  - stilurile de baza, antetul si bara de cautare cu efect de sticla (`backdrop-filter`), alerta de eroare.
+- `theme.js`: `initTheme(button)` alege tema salvata sau, daca nu exista, preferinta sistemului (`prefers-color-scheme`), o aplica pe `<html>` si o comuta la click, salvand-o in `localStorage`. Butonul primeste `aria-pressed`, pentru cititoarele de ecran.
+- `README.md`: impartirea sarcinilor intre M, R si D.
+
+**Decizii**
+
+- Toate culorile sunt variabile CSS. Tema intunecata inseamna doar alte valori pentru aceleasi variabile, asa ca tot ce construiesc R si D cu aceste variabile functioneaza automat in ambele teme.
+- Accesul la `localStorage` este pus in `try / catch`, ca pagina sa mearga si cand browserul blocheaza stocarea.
+
+## v1.1.0 - primul API de geolocalizare, butonul de tema functional
+
+Commit: `65d91b1`
+
+**Ce s-a facut**
+
+- `api.js` (nou):
+  - `cleanQuery(input)` curata textul introdus (in aceasta versiune doar spatiile de la capete);
+  - `classifyQuery(query)` stabileste tipul cautarii: IPv4, IPv6, domeniu sau IP-ul curent (text gol, `localhost`, `127.0.0.1`); pentru un format invalid intoarce `null`;
+  - `fetchGeoData(query)` cere datele de la `ipwho.is` si arunca erori cu mesaje in romana (format invalid, eroare de retea, nu s-au gasit informatii).
+- `main.js` (nou): comutarea temei la click, `showError` / `hideError` pentru alerta, cautarea la trimiterea formularului si incarcarea datelor pentru IP-ul propriu la deschiderea paginii. Rezultatul era afisat deocamdata doar in consola.
+
+**Decizii**
+
+- Butonul de tema nu functiona in v1.0.0, pentru ca pagina incarca `main.js`, care nu exista inca. Odata cu `main.js`, butonul a inceput sa functioneze.
+
+## v1.2.0 - schelet pentru echipa, tema prin theme.js, domenii, cache si validare stricta
+
+Commit-uri: `ed839ef` (PR #1), `ccc5e1d`, `eeee028`, `30b4623` (PR #2)
+
+**Ce s-a facut**
+
+- Schelet pentru R si D (`ed839ef`):
+  - in `index.html` apare `<main id="dashboard" class="grid">`, cu comentarii-marcaj pentru zonele lui R (card detalii, harta, scriptul Leaflet) si ale lui D (istoric);
+  - in `styles.css` apar sectiunile pentru R (grid, card detalii, harta, incarcare) si pentru D (istoric si responsive), ca fiecare sa lucreze in zona lui si sa nu apara conflicte la merge.
+- `main.js` foloseste `initTheme` din `theme.js`, in locul codului de tema scris direct (`ccc5e1d`).
+- `api.js` trece pe `ip-api.com`, care accepta direct si domenii (`eeee028`):
+  - raspunsul este transformat intr-o forma proprie, `{ ip, city, region, country, latitude, longitude, timezone: { id }, connection: { isp } }`, ca detaliile si harta sa nu depinda de formatul serviciului;
+  - cache pe durata sesiunii (`readCache` / `writeCache`, in `sessionStorage`, cheia `geo-cache:<cautare>`): aceeasi cautare nu mai trimite o cerere noua;
+  - mesaje separate pentru prea multe cereri (HTTP 429), eroare de retea si pagina deschisa pe HTTPS.
+- Validare mai stricta (`30b4623`):
+  - `cleanQuery` scoate protocolul, calea, parametrii si portul (`https://github.com/x` devine `github.com`) si parantezele unui IPv6 (`[::1]` devine `::1`);
+  - IPv4 accepta doar numere intre 0 si 255, IPv6 accepta si forma prescurtata (`2001:db8::1`), iar domeniile respecta lungimile maxime;
+  - textul gol, `localhost` si `127.0.0.1` se verifica primii, altfel `127.0.0.1` ar fi fost tratat ca un IPv4 obisnuit.
+
+**Decizii**
+
+- Planul gratuit ip-api.com functioneaza doar prin HTTP. De aceea `fetchGeoData` verifica protocolul paginii si afiseaza un mesaj clar, in loc de o eroare de retea greu de inteles.
