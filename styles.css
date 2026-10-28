@@ -1,5 +1,9 @@
+/* styles.css - stilurile aplicatiei, impartite pe sectiuni.
+   Marcajele "M v1.0.0", "R v1.3.0", "D v1.4.0" arata membrul si versiunea; detalii in docs/jurnal-<membru>.md */
+
+/* M v1.0.0: variabile de design - tema luminoasa (implicita) */
 :root {
-  --bg: #e9eef5;                              /* fundalul de baza al paginii */
+  --bg: #e9eef5;                             /* fundalul de baza al paginii */
   --bg-glow-1: #b9d4ff;                       /* gradient radial stanga-sus */
   --bg-glow-2: #ffd9c2;                       /* gradient radial dreapta-jos */
   --surface: rgba(255, 255, 255, .62);        /* suprafata semitransparenta: carduri, bara de cautare, butoane */
@@ -16,6 +20,7 @@
   --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
+/* M v1.0.0: tema intunecata - aceleasi variabile, alte valori (clasa pusa pe <html> de theme.js) */
 .dark-theme {
   --bg: #0a1220;
   --bg-glow-1: #123a6b;
@@ -32,7 +37,7 @@
   --shadow: 0 12px 34px rgba(0, 0, 0, .4);
 }
 
-/* Stilizare de baza */
+/* M v1.0.0: stilizare de baza */
 *, *::before, *::after { box-sizing: border-box; }
 html { color-scheme: light; }
 html.dark-theme { color-scheme: dark; }
@@ -54,7 +59,7 @@ h2 { font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
 .small { font-size: .85rem; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* Antet si Bara de Cautare */
+/* M v1.0.0: antet si bara de cautare */
 .topbar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
 .brand { display: flex; align-items: center; gap: .6rem; }
 .brand h1 { font-size: 1.4rem; letter-spacing: -.01em; }
@@ -85,14 +90,15 @@ h2 { font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
 .dark-theme .icon-sun { display: none; }
 .dark-theme .icon-moon { display: block; }
 
-/* Alerta de Eroare  */
+/* M v1.0.0: alerta de eroare */
 .error {
   background: var(--danger-bg); color: var(--danger-text); border: 1px solid currentColor;
   border-radius: 12px; padding: .8rem 1rem; margin-bottom: 1rem;
 }
 
 
-/*  R: grid, card detalii, harta, incarcare  */
+/*  R v1.3.0: grid, card detalii, harta, incarcare  */
+/* grid principal: harta in stanga, detaliile si istoricul in coloana din dreapta */
 .grid {
   display: grid; gap: 1.1rem;
   grid-template-columns: minmax(0, 1fr) 340px;
@@ -103,6 +109,7 @@ h2 { font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
 .map-wrap { grid-area: map; }
 .history { grid-area: history; }
 
+/* carduri: aceleasi variabile ca antetul, deci arata bine in ambele teme */
 .card, .map-wrap {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--shadow);
@@ -113,6 +120,7 @@ dt { font-size: .8rem; color: var(--muted); margin-bottom: .15rem; }
 dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 dd .muted { font-weight: 500; font-variant-numeric: tabular-nums; }
 
+/* animatii de incarcare: skeleton pe detalii si spinner peste harta (clasa is-loading pusa de details.js) */
 .is-loading dd, .is-loading dd .muted {
   color: transparent !important; border-radius: 6px; user-select: none;
   background: linear-gradient(90deg, var(--border) 25%, var(--surface-strong) 50%, var(--border) 75%);
@@ -127,6 +135,54 @@ dd .muted { font-weight: 500; font-variant-numeric: tabular-nums; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
+/* D v1.4.0: harta - .map-wrap primeste inaltime, #map il umple; in tema intunecata tile-urile sunt inversate */
+.map-wrap { position: relative; overflow: hidden; min-height: 460px; }
+#map { position: absolute; inset: 0; }
+.dark-theme .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(.9) saturate(.8); }
 
 
-/*  D: istoric si responsive  */
+
+/*  D v1.4.0: istoric si responsive  */
+/* lista de cautari recente (desenata de history.js) */
+.history-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: .9rem; }
+.history-head h2 { margin-bottom: 0; }
+.link-btn {
+  border: 0; border-radius: 8px; padding: .3rem .5rem; cursor: pointer;
+  background: transparent; color: var(--accent); font: 600 .85rem var(--font-body);
+}
+.link-btn:hover:not(:disabled) { background: var(--surface-strong); }
+.link-btn:disabled { color: var(--muted); cursor: default; opacity: .6; }
+.history-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .45rem; }
+.history-item {
+  width: 100%; display: grid; gap: .1rem; padding: .6rem .8rem; text-align: left; cursor: pointer;
+  background: transparent; border: 1px solid var(--border); border-radius: 12px; color: var(--text); font: inherit;
+}
+.history-item:hover { background: var(--surface-strong); border-color: var(--accent); }
+.history-query { font-weight: 600; overflow-wrap: anywhere; }
+.history-empty { margin: 0; }
+
+/* ecrane mari: continutul nu se mai intinde pe toata latimea */
+.topbar, .error, .grid { max-width: 1440px; margin-inline: auto; }
+
+/* tableta: o singura coloana, detaliile pe doua coloane */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "details" "map" "history";
+    grid-template-rows: auto;
+  }
+  .details dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-wrap { min-height: 360px; }
+}
+
+/* telefon: logo si tema pe primul rand, cautarea pe tot randul al doilea */
+@media (max-width: 640px) {
+  .topbar { gap: .75rem; }
+  .topbar .icon-btn { margin-left: auto; }
+  .search { order: 1; flex-basis: 100%; }
+  .search input { padding-inline: .75rem; text-overflow: ellipsis; }
+  .search button { padding-inline: 1rem; }
+  .details dl { grid-template-columns: minmax(0, 1fr); }
+  .card { padding: 1rem; }
+  .map-wrap { min-height: 300px; }
+}

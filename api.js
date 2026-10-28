@@ -1,13 +1,14 @@
-/*api.js - Gestioneaza validarea intrarilor si cererile catre API-ul de geolocalizare */
+/*api.js - Gestioneaza validarea intrarilor si cererile catre API-ul de geolocalizare
+  M v1.1.0 (ipwho.is), refacut in M v1.2.0 (ip-api.com, cache, validare stricta) - vezi docs/jurnal-M.md */
 
-/* Curata textul introdus: scoate protocolul, calea si portul (https://github.com/x -> github.com) */
+/* M v1.2.0: Curata textul introdus: scoate protocolul, calea si portul (https://github.com/x -> github.com) */
 export function cleanQuery(input) {
     let q = input.trim().replace(/^[a-z]+:\/\//i, '').split(/[/?#]/)[0];
     if ((q.match(/:/g) || []).length === 1) q = q.split(':')[0]; // host:port (nu IPv6)
     return q.replace(/^\[|\]$/g, '');                              // [::1] -> ::1
 }
 
-/* Valideaza daca textul este un IPv4, IPv6 sau un nume de domeniu valid */
+/* M v1.2.0: Valideaza daca textul este un IPv4, IPv6 sau un nume de domeniu valid */
 export function classifyQuery(query) {
     const clean = cleanQuery(query);
 
@@ -33,7 +34,7 @@ export function classifyQuery(query) {
     return null; /*Format invalid*/
 }
 
-/* Cache pe durata sesiunii (sessionStorage): aceeasi cautare nu mai consuma o cerere noua */
+/* M v1.2.0: Cache pe durata sesiunii (sessionStorage): aceeasi cautare nu mai consuma o cerere noua */
 function readCache(key) {
     try { return JSON.parse(sessionStorage.getItem(key)); } catch { return null; }
 }
@@ -41,7 +42,7 @@ function writeCache(key, data) {
     try { sessionStorage.setItem(key, JSON.stringify(data)); } catch { /* stocare indisponibila */ }
 }
 
-/* Apeleaza API-ul ip-api.com (accepta direct IP-uri si domenii) pentru a obtine datele de geolocalizare.
+/* M v1.2.0: Apeleaza API-ul ip-api.com (accepta direct IP-uri si domenii) pentru a obtine datele de geolocalizare.
    Raspunsul este adus la forma { ip, city, region, country, latitude, longitude, timezone: { id }, connection: { isp } },
    ca restul aplicatiei (detalii, harta) sa nu depinda de formatul serviciului. */
 export async function fetchGeoData(query = '') {

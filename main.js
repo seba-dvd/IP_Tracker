@@ -1,51 +1,59 @@
-// main.js - Gestioneaza tema si interactiunea cu api.js
+// main.js - coordoneaza modulele
+// D v1.4.0 (versiunea finala; prima versiune: M v1.1.0) - vezi docs/jurnal-D.md
 import { fetchGeoData } from './api.js';
 import { initTheme } from './theme.js';
+import { renderDetails, setLoading } from './details.js';
+import { initMap, updateMap } from './map.js';
+import { addToHistory, clearHistory, renderHistory } from './history.js';
 
+// elementele din pagina folosite de aplicatie (index.html)
 const el = {
     form: document.getElementById('search-form'),
     input: document.getElementById('search-input'),
     error: document.getElementById('error'),
-    themeToggle: document.getElementById('theme-toggle')
+    themeToggle: document.getElementById('theme-toggle'),
+    historyList: document.getElementById('history-list'),
+    historyClear: document.getElementById('history-clear')
 };
 
-// switch de tema (logica este in theme.js)
-if (el.themeToggle) initTheme(el.themeToggle);
+let requestId = 0; // ignora raspunsurile vechi daca se cauta repede
 
-// fctii pentru afisarea erorilor in interfata
-function showError(message) {
-    if (!el.error) return;
-    el.error.textContent = message;
-    el.error.hidden = false;
-}
+// afisarea erorilor in alerta de sub antet (M v1.1.0)
+function showError(message) { el.error.textContent = message; el.error.hidden = false; }
+function hideError() { el.error.hidden = true; el.error.textContent = ''; }
 
-function hideError() {
-    if (!el.error) return;
-    el.error.hidden = true;
-    el.error.textContent = '';
-}
-
-// submit form pentru cautare IP / domeniu
-el.form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// o cautare completa: animatie de incarcare, cerere (api.js), card detalii (details.js),
+// marker pe harta (map.js) si, daca save e true si textul nu e gol, salvare in istoric (history.js)
+async function search(query, { save = true } = {}) {
+    const id = ++requestId;
     hideError();
-
-    const query = el.input.value;
-
+    setLoading(true);
     try {
         const data = await fetchGeoData(query);
-        console.log('Date primite de la API:', data);
+        if (id !== requestId) return;
+        renderDetails(data, query);
+        updateMap(data.latitude, data.longitude, `${data.ip} - ${data.city || ''}`);
+        if (save && query.trim()) {
+            addToHistory(query.trim());
+            renderHistory(el.historyList, onHistoryClick);
+        }
     } catch (err) {
-        showError(err.message);
+        if (id === requestId) showError(err.message);
+    } finally {
+        if (id === requestId) setLoading(false);
     }
-});
+}
 
-// la incarcarea paginii, incarca datele de geolocalizare pentru IP-ul curent
-window.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const data = await fetchGeoData();
-        console.log('Locatia ta initiala:', data);
-    } catch (err) {
-        showError(err.message || 'Nu s-a putut incarca locatia initiala.');
-    }
-});
+// click pe o cautare recenta: o pune in bara de cautare si o reface
+function onHistoryClick(q) { el.input.value = q; search(q); }
+
+// pornire: tema (theme.js), harta (map.js) si istoricul salvat (history.js)
+initTheme(el.themeToggle);
+initMap('map');
+renderHistory(el.historyList, onHistoryClick);
+
+// trimiterea formularului si butonul "Sterge tot"
+el.form.addEventListener('submit', (e) => { e.preventDefault(); search(el.input.value); });
+el.historyClear.addEventListener('click', () => { clearHistory(); renderHistory(el.historyList, onHistoryClick); });
+
+search('', { save: false }); // la pornire: IP-ul utilizatorului
