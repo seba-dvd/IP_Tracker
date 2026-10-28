@@ -39,10 +39,22 @@
   <div id="error" class="error" role="alert" hidden></div>
 
   <main id="dashboard" class="grid">
-    <!--  R: card detalii (inceput)  -->
+    <!--  R: card detalii (inceput)  --><section class="card details" aria-labelledby="details-title">
+  <h2 id="details-title">Detalii retea</h2>
+  <dl>
+    <div><dt>Adresa IP</dt><dd id="d-ip">0.0.0.0</dd></div>
+    <div><dt>Locatie</dt><dd id="d-location">Oras, Regiune, Tara</dd></div>
+    <div><dt>Fus orar</dt><dd><span id="d-timezone">Continent/Oras</span><br><span id="d-time" class="muted">00:00:00</span></dd></div>
+    <div><dt>ISP</dt><dd id="d-isp">Furnizor de internet</dd></div>
+  </dl>
+</section>
     <!--  R: card detalii (sfarsit)  -->
 
     <!--  R: harta (inceput)  -->
+      <section class="map-wrap" aria-label="Harta">
+  <div id="map"></div>
+  <div class="spinner" aria-hidden="true"></div>
+</section>
     <!--  R: harta (sfarsit)  -->
 
     <!--  D: istoric (inceput)  -->
@@ -50,6 +62,8 @@
   </main>
 
   <!-- R: scriptul leaflet.js se adauga aici -->
+   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script type="module" src="main.js"></script>
 </body>
 </html>
