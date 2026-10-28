@@ -1,8 +1,10 @@
-/* theme.js - comutator tema intunecata / luminoasa, salvat in localStorage */
+/* theme.js - comutator tema intunecata / luminoasa, salvat in localStorage
+   M v1.0.0 - vezi docs/jurnal-M.md */
 
 const KEY = 'geo-theme';
 const root = document.documentElement;
 
+// pune / scoate clasa dark-theme pe <html> si actualizeaza aria-pressed pe buton
 function apply(theme, button) {
   root.classList.toggle('dark-theme', theme === 'dark');
   button?.setAttribute('aria-pressed', String(theme === 'dark'));

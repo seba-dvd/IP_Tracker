@@ -1,8 +1,10 @@
-/* history.js - ultimele cautari ale utilizatorului, salvate in localStorage */
+/* history.js - ultimele cautari ale utilizatorului, salvate in localStorage
+   D v1.4.0 - vezi docs/jurnal-D.md */
 
 const KEY = 'geo-history';
 const MAX = 5;
 
+// citeste lista salvata; datele stricate sau in alt format sunt ignorate
 function load() {
   try {
     const list = JSON.parse(localStorage.getItem(KEY));
@@ -10,6 +12,7 @@ function load() {
   } catch { return []; }
 }
 
+// salveaza lista; daca stocarea este blocata, aplicatia merge mai departe fara istoric
 function save(list) {
   try { localStorage.setItem(KEY, JSON.stringify(list)); } catch { /* ignora daca stocarea nu este disponibila */ }
 }

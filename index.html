@@ -4,12 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IP Tracker</title>
+  <!--  Comentariile "M / R / D + versiune" arata cine a scris blocul si in ce versiune; detalii in docs/jurnal-*.md  -->
+
+  <!--  M v1.0.0: fonturi Google si stilurile Leaflet  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="styles.css">
+  <!--  M v1.0.0: tema salvata se aplica inainte de afisare, ca pagina sa nu clipeasca  -->
   <script>
     try {
       const t = localStorage.getItem('geo-theme') ||
@@ -19,6 +23,7 @@
   </script>
 </head>
 <body>
+  <!--  M v1.0.0: antet cu logo, bara de cautare si butonul de tema  -->
   <header class="topbar">
     <div class="brand">
       <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
@@ -36,10 +41,12 @@
     </button>
   </header>
 
+  <!--  M v1.0.0: alerta de eroare, afisata din main.js  -->
   <div id="error" class="error" role="alert" hidden></div>
 
+  <!--  M v1.2.0: grid-ul principal, cu zonele pentru R si D  -->
   <main id="dashboard" class="grid">
-    <!--  R: card detalii (inceput)  --><section class="card details" aria-labelledby="details-title">
+    <!--  R v1.3.0: card detalii (inceput)  --><section class="card details" aria-labelledby="details-title">
   <h2 id="details-title">Detalii retea</h2>
   <dl>
     <div><dt>Adresa IP</dt><dd id="d-ip">0.0.0.0</dd></div>
@@ -48,16 +55,16 @@
     <div><dt>ISP</dt><dd id="d-isp">Furnizor de internet</dd></div>
   </dl>
 </section>
-    <!--  R: card detalii (sfarsit)  -->
+    <!--  R v1.3.0: card detalii (sfarsit)  -->
 
-    <!--  R: harta (inceput)  -->
+    <!--  R v1.3.0: harta (inceput)  -->
       <section class="map-wrap" aria-label="Harta">
   <div id="map"></div>
   <div class="spinner" aria-hidden="true"></div>
 </section>
-    <!--  R: harta (sfarsit)  -->
+    <!--  R v1.3.0: harta (sfarsit)  -->
 
-    <!--  D: istoric (inceput)  -->
+    <!--  D v1.4.0: istoric (inceput)  -->
     <section class="card history" aria-labelledby="history-title">
       <div class="history-head">
         <h2 id="history-title">Cautari recente</h2>
@@ -65,12 +72,13 @@
       </div>
       <ul id="history-list" class="history-list"></ul>
     </section>
-    <!--  D: istoric (sfarsit)  -->
+    <!--  D v1.4.0: istoric (sfarsit)  -->
   </main>
 
-  <!-- R: scriptul leaflet.js se adauga aici -->
+  <!--  R v1.3.0: scriptul Leaflet, incarcat inainte de main.js (care foloseste L)  -->
    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!--  D v1.4.0: main.js porneste aplicatia si leaga modulele  -->
   <script type="module" src="main.js"></script>
 </body>
 </html>
