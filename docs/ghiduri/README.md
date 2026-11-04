@@ -170,7 +170,8 @@ M face scheletul in ziua 0. Pe langa proiectele create si tokenii de design, sch
 
 | Cand | Cine | Ce | Versiune |
 |---|---|---|---|
-| Ziua 0 | M | ghidurile (M0) si scheletul (M1), PR, tag | v2.0.0 |
+| Ziua 0 | M | ghidurile (M0): PR separat, doar cu documentatie, fara tag | - |
+| Ziua 0 | M | scheletul (M1), PR, tag | v2.0.0 |
 | Ziua 0 | R, D | instaleaza uneltele (sectiunea 6), citesc ghidurile, ruleaza versiunea din `vanilla/` | - |
 | Dupa v2.0.0 | toti | sincronizare cu `main`, apoi task-urile din ghid, in paralel | - |
 | La final | M | PR si tag | v2.1.0 |

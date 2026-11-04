@@ -38,7 +38,7 @@ npm -v
 
 ## M0. Urca ghidurile (ziua 0)
 
-Ghidurile sunt in `docs/ghiduri/`. Le urci pe branch-ul `M`, ca R si D sa le poata citi pe GitHub inca de acum. Ajung pe `main` odata cu scheletul, in acelasi PR.
+Ghidurile sunt in `docs/ghiduri/`. Le urci pe branch-ul `M` si deschizi un PR separat, doar cu ele, ca R si D sa le aiba pe `main` inca de acum. PR-ul contine doar documentatie, deci nu primeste tag; v2.0.0 vine cu scheletul.
 
 ```bash
 cd "/c/Facultate An 4 Sem 1/SOPM/Laborator/Etapa1_IP_Tracker/IP_Tracker"
@@ -50,7 +50,7 @@ git commit -m "docs: ghiduri pentru etapa 2 (React si React Native)"
 git push origin M
 ```
 
-Spune-le lui R si D ca ghidurile sunt pe GitHub, pe branch-ul `M`, in `docs/ghiduri`, si ca pot instala uneltele.
+Pe GitHub deschizi PR-ul `M` -> `main` ("docs: ghiduri pentru etapa 2 (React si React Native)") si il unesti. Apoi le spui lui R si D ca ghidurile sunt pe `main`, in `docs/ghiduri`, si ca pot instala uneltele.
 
 ---
 
