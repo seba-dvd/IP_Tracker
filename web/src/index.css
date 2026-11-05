@@ -1,0 +1,84 @@
+/* index.css - variabilele de design si clasele comune (M v2.0.0)
+   Paleta teal si coral: culori pline, colturi rotunjite si umbre fine, fara gradient.
+   Tema intunecata are aceleasi variabile, cu alte valori. */
+
+:root {
+  --bg: #f8f4ec;                     /* fundalul paginii: crem, plin */
+  --panel: #ffffff;                  /* fundalul cardurilor */
+  --border: rgba(31, 42, 46, 0.08);  /* bordura fina a cardurilor */
+  --text: #1f2a2e;                   /* text principal */
+  --muted: #5f6b6e;                  /* text secundar: etichete, placeholder */
+  --primary: #0f766e;                /* teal: logo-ul si cardul cu rezultatul */
+  --on-primary: #ffffff;             /* text pe teal */
+  --on-primary-muted: #e7f1f0;       /* text secundar pe teal */
+  --primary-text: #0f766e;           /* linkuri, iconite si focus pe fundal deschis */
+  --primary-soft: #e3f1ef;           /* teal foarte deschis: pastile, hover */
+  --accent: #f2684a;                 /* coral: butonul Cauta si markerul */
+  --on-accent: #2b1007;              /* text pe coral */
+  --danger: #b42318;                 /* textul mesajului de eroare */
+  --danger-bg: #fef1ee;              /* fundalul mesajului de eroare */
+  --skeleton: #eee8dd;               /* blocurile afisate cat timp se incarca */
+  --shadow: 0 1px 2px rgba(31, 42, 46, 0.06), 0 8px 24px -12px rgba(31, 42, 46, 0.22);
+  --focus: 0 0 0 3px rgba(15, 118, 110, 0.2); /* inelul din jurul campului activ */
+  --radius-panel: 16px;              /* colturile cardurilor */
+  --radius-control: 12px;            /* colturile campurilor si butoanelor */
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+}
+
+/* atributul data-theme este pus pe <html> din index.html si din useTheme;
+   teal-ul si coralul de umplere raman aceleasi, se schimba fundalurile si textele */
+[data-theme='dark'] {
+  --bg: #111418;
+  --panel: #1b2026;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #e9edf0;
+  --muted: #a3adb5;
+  --primary-text: #2dd4bf;           /* teal mai deschis, ca sa se citeasca pe fundal inchis */
+  --primary-soft: #17302d;
+  --danger: #ffb4ab;
+  --danger-bg: #2a1715;
+  --skeleton: #262c33;
+  --shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --focus: 0 0 0 3px rgba(45, 212, 191, 0.25);
+  color-scheme: dark;
+}
+
+/* tonurile iconitelor din detalii: iconita (--tone) pe un fundal deschis al aceluiasi ton (--tone-bg) */
+.tone-teal  { --tone: #0f766e; --tone-bg: #ddf1ee; }
+.tone-coral { --tone: #c8462b; --tone-bg: #fde6e0; }
+.tone-amber { --tone: #a16207; --tone-bg: #fcf0d2; }
+.tone-blue  { --tone: #2b6cb0; --tone-bg: #e1edf9; }
+.tone-plum  { --tone: #7e4a9e; --tone-bg: #f0e6f6; }
+[data-theme='dark'] .tone-teal  { --tone: #5eead4; --tone-bg: #17302d; }
+[data-theme='dark'] .tone-coral { --tone: #ff9a84; --tone-bg: #3a221d; }
+[data-theme='dark'] .tone-amber { --tone: #f5c451; --tone-bg: #362c14; }
+[data-theme='dark'] .tone-blue  { --tone: #8dbbef; --tone-bg: #1b2a3d; }
+[data-theme='dark'] .tone-plum  { --tone: #d2a8ee; --tone-bg: #2e2238; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.4 var(--font);
+}
+
+h1, h2, p, ul, dl, dd { margin: 0; }
+ul { padding: 0; list-style: none; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--primary-text); outline-offset: 2px; }
+
+/* text ascuns vizual, dar citit de cititoarele de ecran */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* clase folosite de mai multe componente */
+.section-title { font-size: 16px; font-weight: 600; }
+.label { font-size: 12px; color: var(--muted); }
+.value { font-size: 15px; font-weight: 500; overflow-wrap: anywhere; }
+.numeric { font-variant-numeric: tabular-nums; }  /* cifre de latime egala: IP, ceas */
+.skeleton { max-width: 220px; border-radius: 6px; color: transparent; background: var(--skeleton); user-select: none; }
