@@ -54,3 +54,10 @@ Commit-uri: `cd40ed9` (PR #3), `bc9146d`, `aad4761`, `0991964`, `1d64bd9` (PR #4
 - Detaliile si harta sunt module separate, cu functii exportate, ca `main.js` sa le poata apela dupa fiecare cautare.
 
 **Legatura cu v1.4.0:** stilurile care dau inaltime hartii (`#map`) si apelarea functiilor din `details.js` si `map.js` in `main.js` au fost adaugate de D in v1.4.0 (vezi [jurnal-D.md](jurnal-D.md)).
+
+## v2.2.0 - rezumat, detalii, ora locala si harta in React si React Native
+
+- `shared/format.js`: `formatLocation`, `formatLocalTime` (Intl.DateTimeFormat cu fusul orar al locatiei) si `detailFields`, lista campurilor cu eticheta, iconita (nume Ionicons) si tonul de culoare, folosita pe web si pe mobil; teste Vitest.
+- `shared/useClock.js`: hook care actualizeaza ora in fiecare secunda si opreste cronometrul la demontare.
+- Web: `ResultSummary` (cardul teal cu IP-ul si locatia), `DetailsPanel` (randuri cu iconite colorate din react-icons, blocuri de incarcare), `MapPanel` cu react-leaflet (marker coral cu halou, zbor animat cu useMap, eticheta ca pastila peste harta, spinner, harta intunecata).
+- Mobil: `ResultSummary`, `DetailsPanel` si `Skeleton`, `MapPanel` cu react-native-maps (harta de 280px, animateToRegion dupa onMapReady, marker cu halou, stil intunecat).
