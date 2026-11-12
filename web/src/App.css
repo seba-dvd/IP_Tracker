@@ -1,2 +1,76 @@
-/* App.css - VERSIUNE TEMPORARA din schelet (M v2.0.0); D scrie asezarea in pagina in v2.3.0 */
-.app { padding: 24px; }
+/* App.css - asezarea paginii (D v2.3.0)
+   Desktop (de exemplu 1280 x 625): continut de 1200px, margini de 40px, harta 840px | 24px | carduri 336px.
+   Cardurile au colturi de 16px si o umbra fina. Pana la 900px: o coloana. Pana la 640px: telefon. */
+
+.app {
+  width: min(1440px, 100% - 80px); /* cel mult 1440px si cel putin 40px liberi pe fiecare parte */
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.error {
+  margin-top: 24px;
+  padding: 12px 16px;
+  border-radius: var(--radius-control);
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 500;
+}
+
+/* zona principala: harta in stanga, coloana de carduri in dreapta */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 336px;
+  gap: 24px;
+  margin-top: 24px;
+  height: calc(100dvh - 116px); /* ecranul minus 24 sus, 44 antetul, 24 spatiul si 24 jos */
+  min-height: 460px;
+}
+
+/* cardurile: alb, colturi de 16px, bordura fina si umbra moale */
+.map-panel,
+.section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow);
+}
+.map-panel { overflow: hidden; } /* colturile rotunjite taie si harta */
+
+/* coloana din dreapta: carduri separate; daca nu incap, coloana are scroll propriu */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-bottom: 8px; /* loc pentru umbra ultimului card */
+  scrollbar-width: thin;
+}
+.section { flex: none; padding: 20px; }
+
+/* cardul cu rezultatul este plin, in culoarea principala */
+.summary { background: var(--primary); border-color: transparent; color: var(--on-primary); }
+
+/* tableta: o singura coloana, in ordinea rezumat, harta, detalii, cautari recente */
+@media (max-width: 900px) {
+  .layout {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+  .sidebar { display: contents; } /* cardurile devin elemente separate ale coloanei */
+  .summary { order: 1; }
+  .map-panel { order: 2; }
+  .details { order: 3; }
+  .recent { order: 4; }
+}
+
+/* telefon (390px): margini, spatii si padding de 16px */
+@media (max-width: 640px) {
+  .app { width: auto; padding: 16px; }
+  .error,
+  .layout { margin-top: 16px; }
+  .layout { gap: 16px; }
+  .section { padding: 16px; }
+}

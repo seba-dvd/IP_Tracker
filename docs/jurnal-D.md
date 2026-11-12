@@ -70,3 +70,11 @@ Inainte de lucru, branch-ul `D` a fost adus la zi cu `main`, care continea deja 
   - cautari dupa IP, domeniu si link, plus text invalid;
   - istoricul: adaugare, fara duplicate, click pe o cautare, pastrare dupa reload, "Sterge tot";
   - ambele teme si latimile 1920, 1280, 800 si 375px, fara scroll orizontal si fara erori in consola.
+
+## v2.3.0 - istoric, carduri si asezare in pagina, in React si React Native
+
+- `shared/history.js`: `addQuery` (cautarea noua prima, fara dubluri, maxim 5) si `parseHistory` (datele stricate devin lista goala); teste Vitest.
+- Web: `useHistory` (localStorage, initializare lazy, salvare intr-un efect) si `RecentSearches` (pastile cu iconita, "Sterge tot").
+- Web: `App.css`: carduri cu colturi de 16px si umbra fina, cardul cu rezultatul in teal, continut de cel mult 1440px cu margini de minim 40px, grila harta / carduri de 336px, zona principala de inaltimea ecranului, coloana de carduri cu scroll propriu; o coloana sub 900px (display: contents si order), dimensiuni de telefon sub 640px.
+- Mobil: `useHistory` (AsyncStorage, citire asincrona, fara suprascrierea listei salvate), `RecentSearches` (pastile), `Panel` (variantele default si primary, boxShadow) si `App.js` (zona sigura, bara de stare dupa tema, ordinea si spatiile din specificatie).
+- README-ul pentru etapa 2 si verificarea finala pe main.
