@@ -4,10 +4,10 @@
 |---|---|
 | GitHub | TudorMituleci |
 | Branch | `M` |
-| Versiuni | v1.0.0, v1.1.0, v1.2.0 |
-| Fisiere | `index.html`, `styles.css`, `theme.js`, `api.js`, `main.js` (prima versiune) |
+| Versiuni | v1.0.0, v1.1.0, v1.2.0, v2.0.0, v2.1.0 |
+| Fisiere | etapa 1 (`vanilla/`): `index.html`, `styles.css`, `theme.js`, `api.js`, `main.js` (prima versiune); etapa 2: scheletul `web/` si `mobile/`, `shared/api.js`, `shared/useGeoSearch.js`, tema, antetul si bara de cautare (web si mobil) |
 
-**Responsabilitati:** partea de inceput a paginii (antetul cu bara de cautare si butonul de tema), stilurile de baza si variabilele de design, validarea textului introdus si functia care aduce datele despre IP-uri si domenii.
+**Responsabilitati:** partea de inceput a paginii (antetul cu bara de cautare si butonul de tema), stilurile de baza si variabilele de design, validarea textului introdus si functia care aduce datele despre IP-uri si domenii. In etapa 2: scheletul proiectelor web (React + Vite) si mobil (React Native + Expo), designul teal si coral (tokenii), API-ul comun si hook-ul de cautare din `shared/`, tema, antetul si bara de cautare pe ambele platforme.
 
 **Cum se citeste:** in cod, blocurile scrise de M au comentarii de forma `M v1.2.0: ...`. Versiunea din comentariu este sectiunea din acest jurnal unde blocul este explicat.
 
@@ -72,3 +72,46 @@ Commit-uri: `ed839ef` (PR #1), `ccc5e1d`, `eeee028`, `30b4623` (PR #2)
 **Decizii**
 
 - Planul gratuit ip-api.com functioneaza doar prin HTTP. De aceea `fetchGeoData` verifica protocolul paginii si afiseaza un mesaj clar, in loc de o eroare de retea greu de inteles.
+
+## v2.0.0 - scheletul pentru React si React Native
+
+Commit-uri: `9c9ab08`, `514a6b1` (ghidurile, PR #6), `da4aebb` (scheletul, PR #7)
+
+**Ce s-a facut**
+
+- Ghidurile etapei 2, in `docs/ghiduri/`: ghidul comun (structura, contractul dintre noi, calendarul, designul) si cate un ghid pentru M, R si D.
+- Etapa 1 a fost mutata in `vanilla/`, fara modificari.
+- `web/`: proiect React creat cu Vite; dependinte: leaflet, react-leaflet, react-icons, vitest.
+- `mobile/`: proiect Expo (template blank); dependinte: react-native-maps, AsyncStorage, safe-area-context, vector-icons, expo-font.
+- `shared/`: cod comun pentru web si mobil; `vite.config.js` si `metro.config.js` il fac vizibil pentru ambele proiecte.
+- Designul teal si coral (culori pline, carduri cu colturi de 16px, umbre fine, tonuri pentru iconite), ca tokeni: `index.css` (web) si `theme.js` (mobil), cu tema intunecata echivalenta si contrastul verificat.
+- `App.jsx` / `App.js` cu structura finala si versiuni temporare pentru fisierele lui R si D, ca toti trei sa lucreze in paralel.
+
+**Decizii**
+
+- Vite in locul lui Create React App, care nu mai este intretinut; Expo, ca aplicatia sa ruleze pe telefon prin Expo Go, fara Android Studio sau Xcode.
+- Toate dependintele sunt instalate in schelet, deci nimeni altcineva nu modifica `package.json` si nu apar conflicte in `package-lock.json`.
+- Versiunile temporare respecta contractul (aceleasi nume si props), iar `useGeoSearch` din schelet intoarce date de proba, ca R si D sa nu astepte API-ul.
+
+## v2.1.0 - API comun, cautare, antet si tema
+
+Commit-uri: `b9d82a1` (API), `6c63ad4` (useGeoSearch), `672fc8a` (tema), `b35fb76` (antetul web), `517e8e4` (antetul mobil)
+
+**Ce s-a facut**
+
+- `shared/api.js`: validarea din v1.2.0, campul nou `reverse` (hostname), rezultat in forma plata, cache in memorie (`Map`); teste Vitest in `web/tests/api.test.js`.
+- `shared/useGeoSearch.js`: rezultatul, eroarea si incarcarea; cautarea IP-ului propriu la pornire; raspunsurile vechi sunt ignorate.
+- Tema: `useTheme` + `ThemeToggle` pe web (`data-theme`, localStorage), `ThemeContext` + `ThemeToggle` pe mobil (AsyncStorage).
+- Antetul si bara de cautare pe web (160 / 24 / camp / 16 / 44) si pe mobil (camp de 48px): logo teal, camp alb cu iconita si umbra, buton coral; iconite Ionicons (react-icons pe web, @expo/vector-icons pe mobil).
+
+**Decizii**
+
+- Cache-ul este un `Map` in memorie, nu `sessionStorage`, care nu exista in React Native.
+- `search` intoarce `true` sau `false`, iar `App` decide ce salveaza in istoric; asa hook-ul nu depinde de istoric (D).
+- Numarul ultimei cereri este tinut in `useRef`, ca un raspuns intarziat sa nu suprascrie unul mai nou (aceeasi idee ca `requestId` din `main.js`, v1.4.0).
+- Butonul "Cauta" are text inchis pe coral (contrast 5.8:1); textul alb ar avea doar 3.1:1.
+
+**Verificare**
+
+- In `web/`: `npm test` (4 teste), `npm run lint` si `npm run build`; pentru mobil, bundle-ul Expo pentru Android si iOS.
+- In browser, la 1280 x 625 si 390 x 844: IP-ul propriu la pornire, `8.8.8.8` (hostname `dns.google`), `https://github.com/user` (devine `github.com`), un text invalid ("Format invalid..."), tema pastrata dupa reload, fara erori in consola.
