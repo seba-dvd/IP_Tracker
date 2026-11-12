@@ -1,0 +1,17 @@
+/* DetailsPanel.css - fiecare camp: iconita colorata in stanga, eticheta 12px si valoarea 15px in dreapta,
+   4px intre eticheta si valoare, 16px intre campuri (R v2.2.0) */
+.fields { display: grid; gap: 16px; margin-top: 16px; }
+.field { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.field > div { min-width: 0; } /* textele lungi se rup pe randul urmator, nu ies din card */
+.field-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--tone-bg); /* --tone si --tone-bg vin din clasa tone-... (index.css) */
+  color: var(--tone);
+  font-size: 18px;
+}
+.field .label { margin-bottom: 4px; }
