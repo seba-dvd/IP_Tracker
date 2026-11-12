@@ -1,0 +1,19 @@
+/* ResultSummary.css - cardul cu rezultatul; fundalul teal il pune D pe .summary, in App.css (R v2.2.0) */
+.summary-card { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.summary-label { font-size: 13px; font-weight: 500; color: var(--on-primary-muted); }
+.summary-ip { margin-top: 6px; font-size: 24px; font-weight: 600; color: var(--on-primary); }
+.summary-place { margin-top: 2px; color: var(--on-primary-muted); }
+.summary-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--on-primary);
+  font-size: 20px;
+}
+
+/* blocurile de incarcare trebuie sa se vada pe teal */
+.summary-card .skeleton { background: rgba(255, 255, 255, 0.2); }
