@@ -1,27 +1,34 @@
 /* App.js - ecranul aplicatiei mobile: starea cautarii, istoricul si ordinea sectiunilor
-   M v2.0.0 (structura); asezarea si stilurile: D v2.3.0 */
+   M v2.0.0 (structura); D v2.3.0 (zona sigura, bara de stare, cardurile si spatiile)
+   Ordinea din specificatie: antet, cautare, rezumat, harta, detalii, cautari recente. */
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useGeoSearch } from '../shared/useGeoSearch';
 import DetailsPanel from './src/components/DetailsPanel';
 import Header from './src/components/Header';
 import MapPanel from './src/components/MapPanel';
+import Panel from './src/components/Panel';
 import RecentSearches from './src/components/RecentSearches';
 import ResultSummary from './src/components/ResultSummary';
 import SearchBar from './src/components/SearchBar';
 import { useHistory } from './src/hooks/useHistory';
+import { radius, space } from './src/theme';
 import { ThemeProvider, useTheme } from './src/ThemeContext';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <Screen />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <Screen />
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 
 function Screen() {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { result, error, loading, search } = useGeoSearch();
   const history = useHistory();
   const [text, setText] = useState(''); // textul din bara de cautare
@@ -34,18 +41,33 @@ function Screen() {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: colors.bg }} contentContainerStyle={styles.content}>
-      <Header />
-      <SearchBar value={text} onChange={setText} onSubmit={() => runSearch(text)} />
-      {error ? <Text style={{ color: colors.danger }}>{error}</Text> : null}
-      <ResultSummary result={result} loading={loading} />
-      <MapPanel result={result} loading={loading} />
-      <DetailsPanel result={result} loading={loading} />
-      <RecentSearches items={history.items} onSelect={runSearch} onClear={history.clear} />
-    </ScrollView>
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.bg }]}>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+        <Header />
+        <SearchBar value={text} onChange={setText} onSubmit={() => runSearch(text)} />
+        {error ? (
+          <Text style={[styles.error, { color: colors.danger, backgroundColor: colors.dangerBg }]}>{error}</Text>
+        ) : null}
+        <Panel variant="primary">
+          <ResultSummary result={result} loading={loading} />
+        </Panel>
+        <Panel flush>
+          <MapPanel result={result} loading={loading} />
+        </Panel>
+        <Panel>
+          <DetailsPanel result={result} loading={loading} />
+        </Panel>
+        <Panel>
+          <RecentSearches items={history.items} onSelect={runSearch} onClear={history.clear} />
+        </Panel>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { padding: 16, paddingTop: 56, gap: 16 },
+  screen: { flex: 1 },
+  content: { padding: space.page, gap: space.gap }, // margini si spatii de 16px
+  error: { padding: 12, borderRadius: radius.control, overflow: 'hidden', fontWeight: '500' },
 });
