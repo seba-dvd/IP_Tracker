@@ -1,0 +1,41 @@
+/* RecentSearches.css - titlul cu "Sterge tot" si cautarile ca pastile (D v2.3.0) */
+.recent-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  margin-bottom: 10px;
+}
+
+/* "Sterge tot" arata ca un link: text teal, fara fundal */
+.link-btn {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--primary-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.link-btn:hover { background: var(--primary-soft); }
+
+.recent-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.recent-list li { min-width: 0; max-width: 100%; }
+.recent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px; /* pastila */
+  background: var(--primary-soft);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
+.recent-chip svg { flex: none; color: var(--primary-text); }
+.recent-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent-chip:hover { box-shadow: inset 0 0 0 1px var(--primary-text); }
