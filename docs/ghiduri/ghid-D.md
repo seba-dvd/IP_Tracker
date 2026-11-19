@@ -1,22 +1,22 @@
 # Ghid D - istoricul, asezarea in pagina si documentatia
 
-| | |
-|---|---|
-| GitHub | seba-dvd |
-| Branch | `D` |
-| Versiune | v2.3.0 |
-| Fisiere | `shared/history.js`, `web/tests/history.test.js`; web: `useHistory`, `RecentSearches` (cu `.css`), `App.css`; mobil: `useHistory`, `RecentSearches`, `Panel`, `App.js`; `README.md` |
+|          |                                                                                                                                                                                                           |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub   | seba-dvd                                                                                                                                                                                                  |
+| Branch   | `D`                                                                                                                                                                                                     |
+| Versiune | v2.3.0                                                                                                                                                                                                    |
+| Fisiere  | `shared/history.js`, `web/tests/history.test.js`; web: `useHistory`, `RecentSearches` (cu `.css`), `App.css`; mobil: `useHistory`, `RecentSearches`, `Panel`, `App.js`; `README.md` |
 
 Citeste mai intai [ghidul comun](README.md), mai ales sectiunile 2-4 (structura si contractul) si 9 (designul teal si coral). Este aceeasi zona ca in v1.4.0 (istoricul, responsive-ul, legarea si documentatia), acum in React si React Native.
 
-| Task | Ce faci | Dificultate |
-|---|---|---|
-| D1 | `shared/history.js`: logica listei de cautari recente + teste | usor |
-| D2 | web: `useHistory` (localStorage) si `RecentSearches` (pastile) | mediu |
-| D3 | web: `App.css`, cardurile si asezarea paginii pe desktop, tableta si telefon | greu |
-| D4 | mobil: `useHistory` (AsyncStorage) si `RecentSearches` (pastile) | mediu |
-| D5 | mobil: `App.js` si `Panel`, cardurile si asezarea ecranului | mediu |
-| D6 | `README.md` pentru etapa 2 si verificarea finala pe `main` | mediu |
+| Task | Ce faci                                                                        | Dificultate |
+| ---- | ------------------------------------------------------------------------------ | ----------- |
+| D1   | `shared/history.js`: logica listei de cautari recente + teste                | usor        |
+| D2   | web: `useHistory` (localStorage) si `RecentSearches` (pastile)             | mediu       |
+| D3   | web: `App.css`, cardurile si asezarea paginii pe desktop, tableta si telefon | greu        |
+| D4   | mobil: `useHistory` (AsyncStorage) si `RecentSearches` (pastile)           | mediu       |
+| D5   | mobil: `App.js` si `Panel`, cardurile si asezarea ecranului                | mediu       |
+| D6   | `README.md` pentru etapa 2 si verificarea finala pe `main`                 | mediu       |
 
 **Ce primesti de la ceilalti (si nu modifici):** `App.jsx` (structura din schelet, M); `useGeoSearch`, variabilele CSS si clasele din `index.css` (M); componentele lui R (le pui in carduri, fara sa le schimbi); `useTheme()` si `theme.js` pe mobil (M).
 
@@ -31,7 +31,6 @@ Citeste mai intai [ghidul comun](README.md), mai ales sectiunile 2-4 (structura 
    node -v
    npm -v
    ```
-
 2. Dupa ce M anunta ca scheletul v2.0.0 este pe `main`:
 
    ```bash
@@ -45,7 +44,6 @@ Citeste mai intai [ghidul comun](README.md), mai ales sectiunile 2-4 (structura 
    npm install
    cd ..
    ```
-
 3. Pornesti aplicatiile (in doua terminale):
 
    ```bash

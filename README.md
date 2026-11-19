@@ -70,8 +70,18 @@ IP_Tracker/
 ├── shared/      cod comun pentru web si mobil: api.js, useGeoSearch.js, format.js, useClock.js, history.js
 ├── web/         aplicatia React (Vite): src/components, src/hooks, tests
 ├── mobile/      aplicatia React Native (Expo): App.js, src/components, src/hooks, theme.js
-└── docs/        jurnalele echipei, ghidurile etapei 2 si captura de ecran
+└── docs/        project charter, planul, arhitectura, jurnalele echipei, ghidurile etapei 2 si captura de ecran
 ```
+
+## Documentatie
+
+| Document | Ce contine |
+|---|---|
+| [Project Charter](docs/project-charter/Project_Charter_IP_Tracker.md) ([PDF](docs/project-charter/Project_Charter_IP_Tracker.pdf)) | scopul, obiectivele, cerintele, livrabilele, riscurile, milestone-urile, partile interesate si aprobarea |
+| [Planul proiectului](docs/plan-proiect.md) | zonele de cod ale fiecarui membru, fluxul Git, versiunile, sarcinile etapei 2, Definition of Done |
+| [Arhitectura](docs/arhitectura.md) | codul comun, contractul dintre componente, fluxul unei cautari, salvarea locala, erorile si testarea |
+| [Ghidurile etapei 2](docs/ghiduri/README.md) | pasii detaliati pentru M, R si D |
+| [Propunere etapa 3](docs/propunere-etapa-3.md) | noua functionalitati noi, planul pe membri si tabelul de decizie (inca nedecis) |
 
 ## Echipa
 
